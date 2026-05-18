@@ -3,7 +3,7 @@
 ![H2O.ai](https://img.shields.io/badge/H2O-AutoML-orange)
 ![Kaggle](https://img.shields.io/badge/Dataset-Kaggle-lightgrey)
 
-This project demonstrates a complete machine learning workflow to predict customer churn in a telecommunications dataset using **H2O AutoML**. It covers data preparation, automated model training, evaluation, feature importance analysis, customer segmentation, and visualization. The goal is to provide actionable insights for customer retention strategies.
+This project applies **H2O AutoML** to predict customer churn in the Telco dataset. The best model achieved AUC 0.85, identifying 1,315 high-risk customers. Insights from contract type, tenure, and online security were used to design targeted retention strategies.
 
 ## 1. Environment Setup
 
