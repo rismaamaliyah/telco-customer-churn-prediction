@@ -3,15 +3,14 @@
 ![H2O.ai](https://img.shields.io/badge/H2O-AutoML-orange)
 ![Kaggle](https://img.shields.io/badge/Dataset-Kaggle-lightgrey)
 
-This notebook demonstrates a machine learning workflow to predict customer churn in a telecommunications dataset using H2O's AutoML capabilities. It covers data loading, model training, evaluation, customer segmentation, and visualization.
+This project demonstrates a complete machine learning workflow to predict customer churn in a telecommunications dataset using **H2O AutoML**. It covers data preparation, automated model training, evaluation, feature importance analysis, customer segmentation, and visualization. The goal is to provide actionable insights for customer retention strategies.
 
 ## 1. Environment Setup
 
-The necessary libraries, `h2o` and `kaggle`, are installed. An H2O cluster is initialized for distributed machine learning tasks.
+Install required libraries and initialize the `H2O` cluster for distributed machine learning. 
 
 ```python
 !pip install h2o
-!pip install kaggle
 import h2o
 from h2o.automl import H2OAutoML
 h2o.init()
@@ -19,7 +18,7 @@ h2o.init()
 
 ## 2. Data Loading
 
-The Telco Customer Churn dataset is downloaded from Kaggle (requires a Kaggle API key) and then imported into the H2O environment.
+Download the Telco Customer Churn dataset from Kaggle and import it into the H2O environment.
 
 ```python
 !kaggle datasets download -d blastchar/telco-customer-churn -p /content
@@ -29,7 +28,7 @@ data = h2o.import_file("/content/WA_Fn-UseC_-Telco-Customer-Churn.csv")
 
 ## 3. AutoML Model Training
 
-The `Churn` column is set as the target variable (`y`), and all other columns are used as features (`x`). H2O AutoML is then used to automatically train and tune various machine learning models (e.g., GBM, GLM, Deep Learning, XGBoost) to predict customer churn. It runs for a maximum of 20 models.
+Define the target variable (`Churn`) and features, then run H2O AutoML to train and tune multiple models (GBM, GLM, Deep Learning, XGBoost).
 
 ```python
 y = "Churn"
@@ -42,7 +41,7 @@ aml.train(x=x, y=y, training_frame=data)
 
 ## 4. Model Evaluation and Prediction
 
-The leaderboard of the trained models is displayed, showing their performance metrics. The best performing model (leader model) is then used to make predictions on the dataset.
+Display the leaderboard and use the best model (Stacked Ensemble, AUC ~0.85) to generate predictions.
 
 ```python
 lb = aml.leaderboard
@@ -55,16 +54,18 @@ print(pred.head())
 
 ## 5. Feature Importance
 
-The variable importance plot for one of the Gradient Boosting Machine (GBM) models is displayed to understand which features contribute most to the churn prediction.
+Analyze feature importance from a Gradient Boosting Machine (GBM) model to identify key drivers of churn.
 
 ```python
 gbm_model = h2o.get_model("GBM_grid_1_AutoML_1_20260518_65151_model_2") # Example model ID
 gbm_model.varimp_plot()
 ```
 
+**Top features:** Contract, Tenure, Online Security
+
 ## 6. Customer Segmentation
 
-Customers are segmented into 'High Risk', 'Medium Risk', and 'Low Risk' categories based on their `Contract` type, `tenure`, and `OnlineSecurity` status. Specifically:
+Segment customers into risk groups based on contract type, tenure, and online security status:
 
 *   **High Risk**: Month-to-month contract, tenure less than 12 months, and no online security.
 *   **Medium Risk**: Month-to-month contract, tenure 12 months or more.
@@ -80,7 +81,7 @@ data['Segment'].as_data_frame().value_counts()
 
 ## 7. Segment Distribution Visualization
 
-A bar plot is generated to visualize the distribution of customers across the defined risk segments.
+Visualize customer distribution across segments.
 
 ```python
 import matplotlib.pyplot as plt
@@ -93,4 +94,20 @@ plt.ylabel("Jumlah Pelanggan")
 plt.show()
 ```
 
-This analysis provides insights into customer churn behavior and identifies different risk groups, which can be valuable for targeted retention strategies.
+## 📊 Result & Insights
+- **Best Model**: Stacked Ensemble (AUC = 0.85).
+- **Key Drivers**: Contract type, tenure, online security.
+- **Segmentation**:
+  - Low Risk: 3,761 customers
+  - Medium Risk: 1,967 customers
+  - High Risk: 1,315 customers
+ 
+### Business Takeaways:
+- Customers with month-to-month contracts are more likely to churn → target with contract upgrade offers.
+- New customers (low tenure) need onboarding and loyalty programs.
+- Lack of online security services indicates upsell opportunities.
+
+ ## 🚀 Next Steps
+ - Deploy the model for real-time churn scoring.
+ - Integrate with BI dashboards for marketing teams.
+ - Design retention cammpaigns based on risk segmentation.
