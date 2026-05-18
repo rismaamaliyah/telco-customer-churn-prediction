@@ -62,6 +62,7 @@ gbm_model.varimp_plot()
 ```
 
 **Top features:** Contract, Tenure, Online Security
+![Feature Importance](images/feature_importance.png)
 
 ## 6. Customer Segmentation
 
@@ -93,6 +94,7 @@ plt.xlabel("Segment")
 plt.ylabel("Jumlah Pelanggan")
 plt.show()
 ```
+![Segment Distribution](images/segment_distribution.png)
 
 ## 📊 Result & Insights
 - **Best Model**: Stacked Ensemble (AUC = 0.85).
@@ -103,9 +105,9 @@ plt.show()
   - High Risk: 1,315 customers
  
 ### Business Takeaways:
-- Customers with month-to-month contracts are more likely to churn → target with contract upgrade offers.
-- New customers (low tenure) need onboarding and loyalty programs.
-- Lack of online security services indicates upsell opportunities.
+- **Month-to-month contracts** → Customers are more likely to churn. Strategy: promote contract upgrades to annual plans.
+- **Short tenure customers** → Higher churn risk. Strategy: strengthen onboarding and loyalty programs.
+- **No online security services** → Indicates upsell opportunities. Strategy: bundle security features to improve retention.
 
  ## 🚀 Next Steps
  - Deploy the model for real-time churn scoring.
